@@ -16,6 +16,7 @@
 		DE32F384213B6E23000645DF /* SongTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE32F383213B6E23000645DF /* SongTableViewCell.swift */; };
 		DE32F386213B71CD000645DF /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE32F385213B71CD000645DF /* Album.swift */; };
 		DE32F388213B71E3000645DF /* AlbumController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE32F387213B71E3000645DF /* AlbumController.swift */; };
+		DE32F391213C95B9000645DF /* exampleAlbum.json in Resources */ = {isa = PBXBuildFile; fileRef = DE32F390213C95B9000645DF /* exampleAlbum.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		DE32F383213B6E23000645DF /* SongTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongTableViewCell.swift; sourceTree = "<group>"; };
 		DE32F385213B71CD000645DF /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		DE32F387213B71E3000645DF /* AlbumController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumController.swift; sourceTree = "<group>"; };
+		DE32F390213C95B9000645DF /* exampleAlbum.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = exampleAlbum.json; path = ../../../exampleAlbum.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 		DE32F38E213B726D000645DF /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				DE32F390213C95B9000645DF /* exampleAlbum.json */,
 				DE32F374213B3634000645DF /* Assets.xcassets */,
 				DE32F379213B3634000645DF /* Info.plist */,
 			);
@@ -192,6 +195,7 @@
 			files = (
 				DE32F378213B3634000645DF /* LaunchScreen.storyboard in Resources */,
 				DE32F375213B3634000645DF /* Assets.xcassets in Resources */,
+				DE32F391213C95B9000645DF /* exampleAlbum.json in Resources */,
 				DE32F373213B3633000645DF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
