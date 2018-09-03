@@ -8,7 +8,41 @@
 
 import Foundation
 
-struct Album: Codable
+struct Song: Codable, Equatable
+{
+    var name: String
+    var identifier: String
+    var duration: String
+    
+    init(name: String, identifier: String, duration: String)
+    {
+        self.name = name
+        self.identifier = identifier
+        self.duration = duration
+    }
+    
+    enum CodingKeys: String, CodingKey
+    {
+        case name
+        case identifier = "id"
+        case duration
+        
+        enum SongNameCodingKeys: String, CodingKey
+        {
+            case title
+        }
+        
+        enum DurationCodingKeys: String, CodingKey
+        {
+            case duration
+        }
+    }
+    
+    
+//@end
+}
+
+struct Album: Codable, Equatable
 {
     var artist: String
     var coverArt: [URL]
@@ -16,6 +50,17 @@ struct Album: Codable
     var identifier: String
     var albumName: String
     var songs: [[String]]
+    //var songs: [Song]
+    
+    init(artist: String, coverArt: [URL], genres: [String], identifier: String, albumName: String, songs: [[String]])
+    {
+        self.artist = artist
+        self.coverArt = coverArt
+        self.genres = genres
+        self.identifier = identifier
+        self.albumName = albumName
+        self.songs = songs
+    }
     
     enum CodingKeys: String, CodingKey
     {
@@ -26,33 +71,13 @@ struct Album: Codable
         case albumName = "name"
         case songs
         
-        enum SongsCodingKeys: String, CodingKey
-        {
-            case name
-            case identifier = "id"
-            case duration
-            
-            enum SongNameCodingKeys: String, CodingKey
-            {
-                case title
-            }
-            
-            enum DurationCodingKeys: String, CodingKey
-            {
-                case duration
-            }
-        }
-        
         enum CoverArtCodingKeys: String, CodingKey
         {
             case url
         }
-//
-//        enum GenresCodingKeys: String, CodingKey
-//        {
-//            case genres
-//        }
     }
+    
+    
     
     init(from decoder: Decoder) throws
     {
@@ -94,29 +119,29 @@ struct Album: Codable
         // songs
         
         var songsContainer = try container.nestedUnkeyedContainer(forKey: .songs)
-        
+
         var songArray: [[String]] = []
-        
+
         while !songsContainer.isAtEnd
         {
             // song title
-            
-            let songContainer = try songsContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.self)
-            
-            let songNameContainer = try songContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.SongNameCodingKeys.self, forKey: .name)
+
+            let songContainer = try songsContainer.nestedContainer(keyedBy: Song.CodingKeys.self)
+
+            let songNameContainer = try songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
             let song = try songNameContainer.decode(String.self, forKey: .title)
-            
+
             // duration
-            
-            let durationContainer = try songContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.DurationCodingKeys.self, forKey: .duration)
-            
+
+            let durationContainer = try songContainer.nestedContainer(keyedBy: Song.CodingKeys.DurationCodingKeys.self, forKey: .duration)
+
             let duration = try durationContainer.decode(String.self, forKey: .duration)
-            
-            
+
+
             // identifier
-            
+
             let identifier = try songContainer.decode(String.self, forKey: .identifier)
-            
+
             let songElements = [song, duration, identifier]
             songArray.append(songElements)
         }
@@ -126,7 +151,7 @@ struct Album: Codable
         self.albumName = albumName
         self.genres = genres
         self.coverArt = coverArt
-        self.songs = Array(songArray)
+        self.songs = songArray
         
     }
     
@@ -154,13 +179,13 @@ struct Album: Codable
         
         for song in songs
         {
-            var songContainer = songsContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.self)
+            var songContainer = songsContainer.nestedContainer(keyedBy: Song.CodingKeys.self)
             
-            var songNameContainer = songContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.SongNameCodingKeys.self, forKey: .name)
+            var songNameContainer = songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
             
             try songNameContainer.encode(song, forKey: .title)
             
-            var durationContainer = songContainer.nestedContainer(keyedBy: CodingKeys.SongsCodingKeys.DurationCodingKeys.self, forKey: .duration)
+            var durationContainer = songContainer.nestedContainer(keyedBy: Song.CodingKeys.DurationCodingKeys.self, forKey: .duration)
             
             try durationContainer.encode(song, forKey: .duration)
             
@@ -170,11 +195,8 @@ struct Album: Codable
         
     }
     
-    
-    
-    
-    
-    
-    
  //@end
 }
+
+
+

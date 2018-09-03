@@ -16,7 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
-        albumController.testEncodingExampleAlbum()
+        let url = URL(string: "https://www.discogs.com/Don-Ho-Tiny-Bubbles/release/1454218")!
+        albumController.createAlbum(artist: "Don Ho", coverArt: [url], genres: [
+            "Pop", "Folk", "World", "Country", "Stage & Screen"], identifier: "001", albumName: "Tiny Bubbles", songs: [["Please Wait For Me", "A1", "2:48"], ["One Paddle, Two Paddle", "A2", "1:48"]]) { (error) in
+                if error != nil
+                {
+                    
+                }
+        }
+        //albumController.testEncodingExampleAlbum()
         //albumController.testDecodingExampleAlbum()
         return true
     }
