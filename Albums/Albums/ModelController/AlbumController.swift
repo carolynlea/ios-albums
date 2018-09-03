@@ -13,10 +13,21 @@ private let baseURL = URL(string: "https://mymovies-dee4d.firebaseio.com/")!
 class AlbumController
 {
     var albums: [Album] = []
+    var songs: [Song] = []
+    
+    init()
+    {
+        getAlbums { (error) in
+            if error != nil
+            {
+                
+            }
+        }
+    }
     
     func getAlbums(completion: @escaping (Error?) -> Void)
     {
-        let url = baseURL.appendingPathComponent("json")
+        let url = baseURL.appendingPathExtension("json")
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -24,7 +35,7 @@ class AlbumController
         URLSession.shared.dataTask(with: request) { (data, _, error) in
             if let error = error
             {
-                NSLog("error \(error)")
+                NSLog("error fetching albums from server \(error)")
                 completion(error)
                 return
             }
@@ -37,10 +48,11 @@ class AlbumController
             do
             {
                 let jsonDecoder = JSONDecoder()
-                let albumArray = Array(try jsonDecoder.decode([String: Album].self, from: data))
+                let albumArray = try Array(jsonDecoder.decode([String: Album].self, from: data).values)
                 
-                let albumList = albumArray.map({ $0.value })
-                self.albums = albumList
+                self.albums = albumArray
+                print(self.albums)
+                
             }
             catch
             {
@@ -90,13 +102,15 @@ class AlbumController
     {
         let album = Album(artist: artist, coverArt: coverArt, genres: genres, identifier: identifier, albumName: albumName, songs: songs)
         albums.append(album)
+        print(album)
         putAlbum(album: album, completion: completion)
     }
     
-    func createSong(name: String, identifier: String, duration: String, completion: @escaping (Error?) -> Void) -> Song
+    func createSong(duration: String, name: String) -> Song
     {
-        let song = Song(name: name, identifier: identifier, duration: duration)
-        
+        let song = Song(duration: duration, name: name)
+        songs.append(song)
+        print(song)
         return song
     }
     

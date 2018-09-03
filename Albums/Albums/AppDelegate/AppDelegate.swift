@@ -16,16 +16,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
-        let url = URL(string: "https://www.discogs.com/Don-Ho-Tiny-Bubbles/release/1454218")!
-        albumController.createAlbum(artist: "Don Ho", coverArt: [url], genres: [
-            "Pop", "Folk", "World", "Country", "Stage & Screen"], identifier: "001", albumName: "Tiny Bubbles", songs: [["Please Wait For Me", "A1", "2:48"], ["One Paddle, Two Paddle", "A2", "1:48"]]) { (error) in
-                if error != nil
-                {
-                    
-                }
-        }
+        let url = URL(string: "https://lastfm-img2.akamaized.net/i/u/174s/1918fe81bb68441d96b2247682bfda21.png")!
+//        let song1 = albumController.createSong(duration: "3:25", identifier: "82BDE132-E492-4FED-9A77-B49CADBC2BFD", name: "My Name Is Jonas")
+//        let song2 = albumController.createSong(duration: "3:05", identifier: "6E8AC92B-ABB4-4303-89CC-51020CEBB557", name: "No One Else")
+//        
+//        albumController.createAlbum(artist: "Weezer", coverArt: [url], genres: ["Alternative"], identifier: "5E58FA0F-7DBD-4F1D-956F-89756CF1EB22", albumName: "Weezer (The Blue Album)", songs: [["3:25", "82BDE132-E492-4FED-9A77-B49CADBC2BFD", "My Name Is Jonas"], ["3:05", "6E8AC92B-ABB4-4303-89CC-51020CEBB557", "No One Else"]]) { (error) in
+//            if error != nil
+//            {
+//
+//            }
+//        }
+        
         //albumController.testEncodingExampleAlbum()
         //albumController.testDecodingExampleAlbum()
+        
+//        albumController.createSong(duration: "3:02", identifier: "322542", name: "My Song") { (error) in
+//            if error != nil
+//            {
+//                return
+//            }
+        
+//        }
         return true
     }
 

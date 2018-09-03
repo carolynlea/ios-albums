@@ -10,36 +10,27 @@ import Foundation
 
 struct Song: Codable, Equatable
 {
-    var name: String
-    var identifier: String
     var duration: String
+    var identifier: String
+    var name: String
     
-    init(name: String, identifier: String, duration: String)
-    {
-        self.name = name
-        self.identifier = identifier
-        self.duration = duration
-    }
     
     enum CodingKeys: String, CodingKey
     {
-        case name
-        case identifier = "id"
         case duration
-        
-        enum SongNameCodingKeys: String, CodingKey
-        {
-            case title
-        }
+        case identifier = "id"
+        case name
         
         enum DurationCodingKeys: String, CodingKey
         {
             case duration
         }
+        
+        enum SongNameCodingKeys: String, CodingKey
+        {
+            case title
+        }
     }
-    
-    
-//@end
 }
 
 struct Album: Codable, Equatable
@@ -50,7 +41,6 @@ struct Album: Codable, Equatable
     var identifier: String
     var albumName: String
     var songs: [[String]]
-    //var songs: [Song]
     
     init(artist: String, coverArt: [URL], genres: [String], identifier: String, albumName: String, songs: [[String]])
     {
@@ -76,7 +66,7 @@ struct Album: Codable, Equatable
             case url
         }
     }
-    
+
     
     
     init(from decoder: Decoder) throws
@@ -121,30 +111,32 @@ struct Album: Codable, Equatable
         var songsContainer = try container.nestedUnkeyedContainer(forKey: .songs)
 
         var songArray: [[String]] = []
-
+        
         while !songsContainer.isAtEnd
         {
-            // song title
-
             let songContainer = try songsContainer.nestedContainer(keyedBy: Song.CodingKeys.self)
-
-            let songNameContainer = try songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
-            let song = try songNameContainer.decode(String.self, forKey: .title)
 
             // duration
 
             let durationContainer = try songContainer.nestedContainer(keyedBy: Song.CodingKeys.DurationCodingKeys.self, forKey: .duration)
 
-            let duration = try durationContainer.decode(String.self, forKey: .duration)
-
+            let duration = try durationContainer.decode([String].self, forKey: .duration)
+            print(duration)
 
             // identifier
 
             let identifier = try songContainer.decode(String.self, forKey: .identifier)
+            print(identifier)
 
-            let songElements = [song, duration, identifier]
-            songArray.append(songElements)
+            // song title
+
+            let songNameContainer = try songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
+
+            let title = try songNameContainer.decode(String.self, forKey: .title)
+            print(title)
         }
+        
+        
         
         self.artist = artist
         self.identifier = identifier
@@ -177,19 +169,20 @@ struct Album: Codable, Equatable
         
         var songsContainer = container.nestedUnkeyedContainer(forKey: .songs)
         
+
         for song in songs
         {
             var songContainer = songsContainer.nestedContainer(keyedBy: Song.CodingKeys.self)
             
-            var songNameContainer = songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
-            
-            try songNameContainer.encode(song, forKey: .title)
-            
             var durationContainer = songContainer.nestedContainer(keyedBy: Song.CodingKeys.DurationCodingKeys.self, forKey: .duration)
-            
+
             try durationContainer.encode(song, forKey: .duration)
             
             try songContainer.encode(song, forKey: .identifier)
+            
+            var songNameContainer = songContainer.nestedContainer(keyedBy: Song.CodingKeys.SongNameCodingKeys.self, forKey: .name)
+            
+            try songNameContainer.encode(song, forKey: .title)
         }
         
         
